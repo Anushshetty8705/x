@@ -1,0 +1,101 @@
+@import "tailwindcss";
+
+
+
+@media(max-width: 768px) {
+ .hide{
+  display: none;
+
+ }
+ .box{
+  margin: 40px 40px;
+  padding: 0;
+  width: 80vw;
+ }
+ .logo{
+margin: 20px 0px;
+ }
+ .coin{
+    width: 50px;
+ }
+ .t{
+  font-size: 18px;
+  margin: 0;
+ }
+ .t1{
+  font-size: 40px;
+ }
+ .t2{
+  font-size: 20px;
+ }
+ .input{
+  margin:10px 0;
+  padding: 8px 20px;
+  width: 90%;
+ }
+.i1{
+   margin-left: 10px;
+}
+ .bu{
+  font-size: 18px;
+  padding: 8px 20px;
+ 
+ }
+  .ti{
+  font-size: 18px;
+  margin: 0;
+  text-align: center;
+ }
+ .bu1{
+  margin-right: 66px;
+   margin-left: 60px;
+ }
+ .error{
+    margin: 0px;
+    margin-left: 62px;
+    margin-bottom: 10px;
+ }
+ /* siginig page */
+ .t4{
+  margin-top: 30px
+ }
+ .m{
+  margin-left: 20px
+ }
+ /* login */
+ .view{
+    width:25px;
+    top: 18px;
+ }
+ .lview{
+   top: 20px;
+   left: 80%;
+   width: 25px;
+ }
+ .coi{
+   width: 28px;
+ }
+ .t11{
+   font-size: 20px;
+ }
+ .t22{
+   font-size: 12px
+ }
+ .nav{
+   margin: 0;
+   padding: 5px 15px;
+ }
+ .params{
+   font-size: 12px;
+ }
+ .bu3{
+   margin: 0;padding: 5px 15px;
+   font-size: 12px;
+   font-weight:400;
+
+ }
+ .user{
+   gap: 20px;
+ }
+ 
+}
