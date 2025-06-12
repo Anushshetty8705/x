@@ -1,8 +1,10 @@
 import { MongoClient } from 'mongodb';
 
 const uri = process.env.MONGODB_URI;
-const client = new MongoClient(uri);
 const dbName = "Xtrack";
+
+let cachedClient = null;
+let cachedDb = null;
 
 export async function handler(event) {
   if (event.httpMethod !== 'POST') {
@@ -15,9 +17,18 @@ export async function handler(event) {
   try {
     const body = JSON.parse(event.body);
 
-    await client.connect();
-    const db = client.db(dbName);
-    const collection = db.collection("users");
+    // Use cached DB connection if available
+    if (!cachedClient || !cachedDb) {
+      const client = new MongoClient(uri, {
+        serverSelectionTimeoutMS: 5000, // optional timeout
+      });
+
+      await client.connect();
+      cachedClient = client;
+      cachedDb = client.db(dbName);
+    }
+
+    const collection = cachedDb.collection("users");
 
     const user = await collection.findOne({
       username: body.username,
