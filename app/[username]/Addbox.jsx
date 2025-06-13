@@ -17,7 +17,8 @@ const addbox = () => {
     React.useEffect(() => {
         const fetchEntries = async () => {
             try {
-                const res = await fetch(`/api/entry/get?username=${username}`);
+        const res = await fetch(`/.netlify/functions/entry-get?username=${username}`);
+
                 const data = await res.json();
                 if (data.success) {
                     setEntries(data.entries);
@@ -106,7 +107,7 @@ const handleadd = async () => {
 
     const handleedit = async (entry) => {
         try {
-            const res = await fetch("/api/entry/edit", {
+    const res = await fetch("/.netlify/functions/entry-edit", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
