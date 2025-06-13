@@ -1,4 +1,8 @@
 import { MongoClient } from 'mongodb';
+export const config = {
+  region: 'bom1' // 🟢 Sets function to run in India region
+};
+
 
 const uri = process.env.MONGODB_URI;
 const dbName = "Xtrack";
