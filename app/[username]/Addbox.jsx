@@ -44,95 +44,66 @@ const addbox = () => {
         setdis(e.target.value)
         dis.length < 7 ? setdiscerror("* Discrption should atleast be 8 character") : setdiscerror("")
     }
-    const handleadd = async () => {
-        if (amount.length === 0) {
-            setamounterror("* This field is required");
-        }
-        if (dis.length === 0) {
-            setdiscerror("* This field is required");
-        }
+const handleadd = async () => {
+    if (amount.length === 0) {
+        setamounterror("* This field is required");
+    }
+    if (dis.length === 0) {
+        setdiscerror("* This field is required");
+    }
 
-        if (amount.length !== 0 && !isNaN(amount) && dis.length > 7) {
-            const toastId = toast.loading('Adding...', {
-                icon: '⏳',
-                style: {
-                    fontSize: '20px',
-                    borderRadius: '10px',
-                    background: 'blue',
-                    color: '#fff',
-                    fontWeight: '600',
-                    padding: '12px 24px',
-                },
-            });
+    if (amount.length !== 0 && !isNaN(amount) && dis.length > 7) {
+        const toastId = toast.loading('Adding...', {
+            icon: '⏳',
+            style: {
+                fontSize: '20px',
+                borderRadius: '10px',
+                background: 'blue',
+                color: '#fff',
+                fontWeight: '600',
+                padding: '12px 24px',
+            },
+        });
 
-            try {
-                // 1. Send add request
-                const response = await fetch("/api/entry/add", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        username,
-                        date: new Date().toLocaleDateString(),
-                        time: new Date().toLocaleTimeString(),
-                        description: dis,
-                        amount: parseFloat(amount),
-                    }),
-                });
-
-                const result = await response.json();
-
-                if (result.success) {
-                    // 2. Refresh entries list
-                    const updated = await fetch(`/api/entry/get?username=${username}`);
-                    const entriesData = await updated.json();
-                    setEntries(entriesData.entries);
-
-                    toast.dismiss(toastId);
-                    toast.success("Added successfully!");
-                    setamount('');
-                    setdis('');
-                    setshow(false);
-                    handlevisbility();
-                } else {
-                    toast.dismiss(toastId);
-                    toast.error(result.message || "Failed to add entry");
-                }
-            } catch (err) {
-                toast.dismiss(toastId);
-                toast.error("Server error");
-            }
-        }
-    };
-    const handledelete = async (id) => {
-alert("Are you sure....")
         try {
-            const res = await fetch("/api/entry/delete", {
+            const response = await fetch("/.netlify/functions/entry-add", {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ id })
+                body: JSON.stringify({
+                    username,
+                    date: new Date().toLocaleDateString(),
+                    time: new Date().toLocaleTimeString(),
+                    description: dis,
+                    amount: parseFloat(amount),
+                }),
             });
 
-            const result = await res.json();
+            const result = await response.json();
 
             if (result.success) {
-                toast.success("Entry deleted");
-
-                // Refresh entries after deletion
-                const updated = await fetch(`/api/entry/get?username=${username}`);
+                const updated = await fetch(`/.netlify/functions/entry-get?username=${username}`);
                 const entriesData = await updated.json();
                 setEntries(entriesData.entries);
+
+                toast.dismiss(toastId);
+                toast.success("Added successfully!");
+                setamount('');
+                setdis('');
+                setshow(false);
+                handlevisbility();
             } else {
-                toast.error(result.message || "Delete failed");
+                toast.dismiss(toastId);
+                toast.error(result.message || "Failed to add entry");
             }
         } catch (err) {
-            toast.error("Server error while deleting");
-            console.error(err);
+            toast.dismiss(toastId);
+            toast.error("Server error");
         }
-    };
+    }
+};
+
     const handleedit = async (entry) => {
         try {
             const res = await fetch("/api/entry/edit", {
