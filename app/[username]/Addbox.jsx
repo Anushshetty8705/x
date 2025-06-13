@@ -17,7 +17,8 @@ const addbox = () => {
     React.useEffect(() => {
         const fetchEntries = async () => {
             try {
-        const res = await fetch(`/.netlify/functions/entry-get?username=${username}`);
+     const res = await fetch(`/api/entry-get?username=${username}`);
+
 
                 const data = await res.json();
                 if (data.success) {
@@ -67,7 +68,8 @@ const handleadd = async () => {
         });
 
         try {
-            const response = await fetch("/.netlify/functions/entry-add", {
+            const response = await fetch("/api/entry-add", {
+
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -84,7 +86,8 @@ const handleadd = async () => {
             const result = await response.json();
 
             if (result.success) {
-                const updated = await fetch(`/.netlify/functions/entry-get?username=${username}`);
+             const updated = await fetch(`/api/entry-get?username=${username}`);
+
                 const entriesData = await updated.json();
                 setEntries(entriesData.entries);
 
@@ -107,7 +110,8 @@ const handleadd = async () => {
 
     const handleedit = async (entry) => {
         try {
-    const res = await fetch("/.netlify/functions/entry-edit", {
+const res = await fetch("/api/entry-edit", {
+
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -117,7 +121,8 @@ const handleadd = async () => {
             const result = await res.json();
 
             if (result.success) {
-     const updated = await fetch(`/.netlify/functions/entry-get?username=${username}`);
+const updated = await fetch(`/api/entry-get?username=${username}`);
+
                 const entriesData = await updated.json();
                 setEntries(entriesData.entries);
                 setamount(entry.amount)
@@ -135,7 +140,8 @@ const handleadd = async () => {
 
 const handledelete = async (id) => {
     try {
-        const res = await fetch("/.netlify/functions/entry-delete", {
+      const res = await fetch("/api/entry-delete", {
+
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -146,7 +152,8 @@ const handledelete = async (id) => {
         const result = await res.json();
 
         if (result.success) {
-            const updated = await fetch(`/.netlify/functions/entry-get?username=${username}`);
+        const updated = await fetch(`/api/entry-get?username=${username}`);
+
             const entriesData = await updated.json();
             setEntries(entriesData.entries);
             toast.success("Deleted successfully");
