@@ -2,7 +2,7 @@ import { MongoClient } from 'mongodb';
 
 const uri = process.env.MONGODB_URI;
 const dbName = "Xtrack";
-
+console.log("🔍 MONGODB_URI:", uri);
 let cachedClient = null;
 let cachedDb = null;
 
