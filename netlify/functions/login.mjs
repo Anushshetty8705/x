@@ -1,12 +1,13 @@
 import { MongoClient } from 'mongodb';
-export const config = {
-  region: 'bom1' // 🟢 Sets function to run in India region
-};
 
+export const config = {
+  region: 'bom1' // optional: runs the function in India region
+};
 
 const uri = process.env.MONGODB_URI;
 const dbName = "Xtrack";
 console.log("🔍 MONGODB_URI:", uri);
+
 let cachedClient = null;
 let cachedDb = null;
 
@@ -24,7 +25,9 @@ export async function handler(event) {
     // Use cached DB connection if available
     if (!cachedClient || !cachedDb) {
       const client = new MongoClient(uri, {
-        serverSelectionTimeoutMS: 5000, // optional timeout
+        serverSelectionTimeoutMS: 5000,
+        tls: true, // ✅ important fix
+        tlsAllowInvalidCertificates: false, // optional but recommended
       });
 
       await client.connect();
