@@ -117,7 +117,7 @@ const handleadd = async () => {
             const result = await res.json();
 
             if (result.success) {
-                const updated = await fetch(`/api/entry/get?username=${username}`);
+     const updated = await fetch(`/.netlify/functions/entry-get?username=${username}`);
                 const entriesData = await updated.json();
                 setEntries(entriesData.entries);
                 setamount(entry.amount)
@@ -133,6 +133,30 @@ const handleadd = async () => {
 
     }
 
+const handledelete = async (id) => {
+    try {
+        const res = await fetch("/.netlify/functions/entry-delete", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ id })
+        });
+
+        const result = await res.json();
+
+        if (result.success) {
+            const updated = await fetch(`/.netlify/functions/entry-get?username=${username}`);
+            const entriesData = await updated.json();
+            setEntries(entriesData.entries);
+            toast.success("Deleted successfully");
+        } else {
+            toast.error(result.message || "Failed to delete");
+        }
+    } catch (err) {
+        toast.error("Server error while deleting");
+    }
+};
 
 
 
@@ -149,7 +173,7 @@ const handleadd = async () => {
                     </div>
                     <div className='h-[80%] w-[92%] bg-slate-800/30 m-auto overflow-auto rounded-4xl'>
                         {entries.map(entry => (
-                            <div key={entry.id} className='flex justify-evenly mt-3 mx-3  py-2 rounded-3xl text-slate-100/20'>
+                            <div div key={entry._id} className='flex justify-evenly mt-3 mx-3  py-2 rounded-3xl text-slate-100/20'>
                                 <div className=' w-[12.5%] flex flex-col items-center'>
                                     <span>{entry.date}</span>
                                     <span>{entry.time}</span>
